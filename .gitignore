@@ -128,5 +128,3 @@ dmypy.json
 # Pyre type checker
 .pyre/
 
-#config file w/API key
-Leaflet-Step-1/static/js/config.js
