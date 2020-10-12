@@ -2,14 +2,14 @@
 var baseUrl = "https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/all_day.geojson"
 
 
-// Function to generate earthquake features layer
+// Function to generate earthquake layer
 function createCircles(response) {
     
     // store features in a variable
     var earthquakeData = response.features;
     
     // print features for reference
-    console.log(earthquakeData);
+    // console.log(earthquakeData);
     
     // Initialize array to hold earthquake circles
     var earthquakeCircles = [];
@@ -18,16 +18,40 @@ function createCircles(response) {
     for (let i = 0; i < earthquakeData.length; i++) {
         var earthquake = earthquakeData[i];
         
+        // store lat, lon, and depth coordinates
+        var lat = earthquake.geometry.coordinates[1];
+        var lon = earthquake.geometry.coordinates[0];
+        var depth = earthquake.geometry.coordinates[2];
+
+        // create color variable and run conditional to determine color
+        var color = "";
+        if (depth > -10 && depth <=10) {
+            color = "#9BFF59"
+        }
+        else if (depth > 10 && depth <= 30) {
+            color = "#DFF96A"
+        }
+        else if (depth > 30 && depth <= 50) {
+            color = "#FFF981"
+        }
+        else if (depth > 50 && depth <= 70) {
+            color = "#FFBC38"
+        }
+        else if (depth > 70 && depth <= 90) {
+            color = "#FF9E38"
+        }
+        else color = "#FF3838"
+
         // for each earthquake, create a circle and bind a popup with info
-        var circle = L.circle([earthquake.geometry.coordinates[1], earthquake.geometry.coordinates[0]], {
+        var circle = L.circle([lat,lon], {
             
             // adjust radius based on magnitude
             radius: earthquake.properties.mag * 20000,
             // adjust color based on depth
-            fillColor: earthquake.geometry.coordinates[3],
-            color: earthquake.geometry.coordinates[3],
-            fillOpacity: 0.5
-        }).bindPopup("<h2>Location: " + earthquake.properties.place + "</h2> <hr> <h3>Magnitude: " + earthquake.properties.mag + "</h3>")
+            fillColor: color,
+            color: "black", 
+            fillOpacity: 0.7,
+        }).bindPopup("<h2>Location: " + earthquake.properties.place + "</h2> <hr> <h3>Magnitude: " + earthquake.properties.mag + "</h3> <hr> <h3>Depth: " + depth + "</h3>")
         
         // add circle to earthquake circles array
         earthquakeCircles.push(circle);
