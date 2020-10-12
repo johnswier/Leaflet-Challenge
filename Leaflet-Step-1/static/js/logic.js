@@ -101,36 +101,27 @@ function createMap(earthquakes) {
     L.control.layers(baseMaps, overlayMaps, {
         collapsed: false
     }).addTo(myMap);
-    
-    function getColor(d) {
-        return d > 1000 ? '#800026' :
-               d > 90  ? '#BD0026' :
-               d > 70  ? '#E31A1C' :
-               d > 50  ? '#FC4E2A' :
-               d > 30   ? '#FD8D3C' :
-               d > 10   ? '#FEB24C' :
-               d > -10   ? '#FED976' :
-                          '#FFEDA0';
-    }
+  
     // Create a legend 
     var legend = L.control({
-    position: "bottomright"
+        position: "bottomright"
     });
   
-    // When the layer control is added, insert a div with the class of "legend"
+    // When the layer control is added, insert a div with the class of info legend
+    // add depths and colors list to use when creating the legend
     legend.onAdd = function() {
-        var div = L.DomUtil.create("div", "legend"), depths = [-10,10,30,50,70,90]
+        var div = L.DomUtil.create("div", "info legend"), depths = [-10,10,30,50,70,90], colors = ["#9BFF59", "#DFF96A", "#FFF981", "#FFBC38", "#FF9E38", "#FF3838"]
             
-        for (let i = 0; i < depths.length; i++) {
+        for (var i = 0; i < depths.length; i++) {
             div.innerHTML +=
-            '<i class="circle style="background:' + getColor(depths[i] + 1) + '"></i> ' +
-            depths[i] + (depths[i + 1] ? '&ndash;' + depths[i + 1] + '<br>' : '+');
+                '<i style="background:' + colors[i] + '"></i>' +
+                depths[i] + (depths[i + 1] ? '&ndash;' + depths[i + 1] + '<br>' : '+');
         }
         return div;
     };
+    
     // Add the legend to the map
     legend.addTo(myMap);
-  
 }
 
 // Perform GET request, call createCircles function 
