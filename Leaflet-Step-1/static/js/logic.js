@@ -1,7 +1,6 @@
 // API endpoint 
 var baseUrl = "https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/all_day.geojson"
 
-
 // Function to generate earthquake layer
 function createCircles(response) {
     
